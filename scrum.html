@@ -1,0 +1,170 @@
+<html>
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <style>
+      .spin-wheel {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background-color: #000;
+        position: relative;
+        margin: 50px auto;
+      }
+      .spin-wheel h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        color: #00AFFF;
+      }
+      .spin-button {
+        display: block;
+        width: 100px;
+        height: 30px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 20px auto;
+      }
+      .timer {
+        display:block;
+        text-align: center;
+        margin: 0;
+        font-size: 20px;
+        font-family: 'Montserrat', sans-serif;
+        color: #00AFFF;
+        border: 1px solid #00AFFF;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 10px auto;
+      }
+ .selected-names {
+    list-style: none;
+    padding: 0px 0px 0px 120px;
+    margin: 0;
+    column-count: 1;
+  }
+  .selected-names li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin: 10px 0;
+  }
+        
+    .center-button {
+  text-align: center;
+padding-top: 20px;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="spin-wheel">
+      <h1 id="name">Scrum Selector</h1>
+      
+    </div>
+  <div>
+      <p class="timer" id="timer" style="width: 100px;">Timer</p>
+      
+    </div>
+    <button class="spin-button" onclick="spin()">Spin</button>
+    <div style="columns: 3;">
+  <ul id="selected-names" class="selected-names"></ul>
+   
+</div>
+     <div class="center-button">
+  <button class="reset-button" onclick="reset()">Clear List and Timer</button>
+</div>
+    <script>
+      var names = ["Alex Schroller", "Amy Edwards", "April Christia", "Christy Paraskevas", "Damian Trudell", "Daniel Lopez", "June Wang", "Katie Darden",  "Kenji Sakulrat", "Krista Monjauze", "Leslie Sarmiento", "Lex Olivo", "Linh Lu", "Martina Georgieva", "Matthew Negron", "Meaghan Farrell-Andino", "Michaele Cerf", "Michele Myers", "Miguel Hinke", "Petko Mikhailov", "Shane Kelly", "Siara Barnes", "Travis Kelly", "Zoltan Fabry"];
+      var usedNames = [];
+      var timer;
+      var time = 0;
+    
+  function spin() {
+    clearInterval(timer);
+    time = 0;
+    timer = setInterval(updateTime, 1000);
+    var name = document.getElementById("name");
+    if (names.length == 0) {
+      name.innerHTML = "That's everyone!";
+      clearInterval(timer);
+      name.style.color = 'white';
+      var spinWheel = document.querySelector('.spin-wheel');
+      spinWheel.style.backgroundColor = 'green';
+      return;
+    }
+    var randomIndex = Math.floor(Math.random() * names.length);
+    var selectedName = names[randomIndex];
+    names.splice(randomIndex, 1);
+    usedNames.push(selectedName);
+    name.innerHTML = selectedName;
+    var selectedList = document.getElementById("selected-names");
+    var entry = document.createElement("li");
+    entry.appendChild(document.createTextNode(selectedName));
+
+    if(selectedName === "Michele Myers" || selectedName === "Shane Kelly" || selectedName === "Christy Paraskevas" || selectedName === "Michaele Cerf") {
+        entry.style.color = "red";
+        entry.style.fontWeight = "bold";
+        
+        
+    }
+    selectedList.appendChild(entry);
+  }
+
+        
+       function updateTime(){
+    time++;
+    var minutes = Math.floor(time / 60);
+    var seconds = time % 60;
+    if (seconds < 10){
+        seconds = "0" + seconds;
+    }
+    if (minutes < 10){
+        minutes = "0" + minutes;
+    }
+    document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+}
+
+
+
+        
+        function reset() {
+  names = ["Alex Schroller", "Amy Edwards", "April Christia", "Christy Paraskevas", "Damian Trudell", "Daniel Lopez", "June Wang", "Katie Darden", "Kenji Sakulrat", "Krista Monjauze", "Leslie Sarmiento", "Lex Olivo", "Linh Lu", "Martina Georgieva", "Matthew Negron", "Meaghan Farrell-Andino", "Michaele Cerf", "Michele Myers", "Miguel Hinke", "Petko Mikhailov", "Shane Kelly", "Siara Barnes", "Travis Kelly", "Zoltan Fabry"];
+  usedNames = [];
+  clearInterval(timer);
+  time = 0;
+  document.getElementById("timer").innerHTML = "0:00";
+  var spinWheel = document.querySelector('.spin-wheel');
+  spinWheel.style.backgroundColor = '#000';
+  var selectedNamesList = document.getElementById("selected-names");
+  selectedNamesList.innerHTML = '';
+            
+            
+}
+      
+    function startTimer() {
+    timer = setInterval(function() {
+      time++;
+      var minutes = Math.floor(time / 60);
+      var seconds = time % 60;
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+    document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+    }, 1000);
+    }
+    
+      window.addEventListener("load", function() {
+        startTimer();
+      });
+    </script>
+  </body>
+</html>
